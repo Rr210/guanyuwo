@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>关于 | R 's Blog</title>
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="../img/favicon.ico">
+    <script>
+        var activateDarkMode = function () {
+            document.documentElement.setAttribute('data-theme', 'dark')
+            if (document.querySelector('meta[name="theme-color"]') !== null) {
+                document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+            }
+        }
+        var activateLightMode = function () {
+            document.documentElement.setAttribute('data-theme', 'light')
+            if (document.querySelector('meta[name="theme-color"]') !== null) {
+                document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+            }
+        }
+
+        var getCookies = function (name) {
+            const value = `; ${document.cookie}`
+            const parts = value.split(`; ${name}=`)
+            if (parts.length === 2) return parts.pop().split(';').shift()
+        }
+
+        var autoChangeMode = 'true'
+        var t = getCookies('theme')
+        if (autoChangeMode === '1') {
+            var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+            var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+            var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+            var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+            if (t === undefined) {
+                if (isLightMode) activateLightMode()
+                else if (isDarkMode) activateDarkMode()
+                else if (isNotSpecified || hasNoSupport) {
+                    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+                    var now = new Date()
+                    var hour = now.getHours()
+                    var isNight = hour <= 7 || hour >= 21
+                    isNight ? activateDarkMode() : activateLightMode()
+                }
+                window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+                    if (Cookies.get('theme') === undefined) {
+                        e.matches ? activateDarkMode() : activateLightMode()
+                    }
+                })
+            } else if (t === 'light') activateLightMode()
+            else activateDarkMode()
+        } else if (autoChangeMode === '2') {
+            now = new Date()
+            hour = now.getHours()
+            isNight = hour <= 7 || hour >= 21
+            if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+            else if (t === 'light') activateLightMode()
+            else activateDarkMode()
+        } else {
+            if (t === 'dark') activateDarkMode()
+            else if (t === 'light') activateLightMode()
+        }
+    </script>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2d48389313488d2c8dc6272d98cf8d12";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-159912944-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <script>
+        var GLOBAL_CONFIG = {
+            root: '/',
+            algolia: undefined,
+            localSearch: {
+                "path": "search.xml",
+                "languages": {
+                    "hits_empty": "找不到您查询的内容:${query}"
+                }
+            },
+            translate: {
+                "defaultEncoding": 2,
+                "translateDelay": 0,
+                "msgToTraditionalChinese": "繁",
+                "msgToSimplifiedChinese": "簡"
+            },
+            noticeOutdate: undefined,
+            copy: {
+                success: '复制成功',
+                error: '复制错误',
+                noSupport: '浏览器不支持'
+            },
+            bookmark: {
+                message_prev: '按',
+                message_next: '键将本页加入书签'
+            },
+            runtime_unit: '天',
+            runtime: true,
+            copyright: undefined,
+            ClickShowText: undefined,
+            medium_zoom: false,
+            fancybox: true,
+            Snackbar: {
+                "bookmark": {
+                    "message_prev": "按",
+                    "message_next": "键将本页加入书签"
+                },
+                "chs_to_cht": "你已切换为繁体",
+                "cht_to_chs": "你已切换为简体",
+                "day_to_night": "你已切换为深色模式",
+                "night_to_day": "你已切换为浅色模式",
+                "bgLight": "#49b1f5",
+                "bgDark": "#2d3035",
+                "position": "bottom-center"
+            },
+            justifiedGallery: {
+                js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+                css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+            },
+            baiduPush: true,
+            highlightCopy: true,
+            highlightLang: true,
+            isPhotoFigcaption: true,
+            islazyload: true,
+            isanchor: true
+        }
+    </script>
+    <script>
+        var GLOBAL_CONFIG_SITE = {
+            isPost: false,
+            isHome: false,
+            isHighlightShrink: false,
+            isSidebar: false,
+            postUpdate: '2020-07-16 22:16:03'
+        }
+    </script>
+    <noscript>
+        <style>
+            #nav {
+                opacity: 1
+            }
+            .justified-gallery img {
+                opacity: 1
+            }
+        </style>
+    </noscript>
+    <link rel="stylesheet" href="../css/tag.css">
+    <link rel="stylesheet" href="../css/animation.min.css">
+    <link rel="stylesheet" href="../css/flink.min.css">
+
+</head>
+
+<body>
+
+        <header class="not-index-bg" id="page-header" style="background-image: url( https://api.ixiaowai.cn/api/api.php)">
+            <div id="page_site-info">
+                <h1 id="site_title">关于</h1>
+            </div>
+        </header>
+        <main class="layout_page" id="content-inner">
+            <div id="page">
+                <div id="article-container">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css">
+                    <script src="../js/alifont.js"></script>
+
+
+                    <h3 id="欢迎来到我的个人博客，我是R！"><a href="index.html#欢迎来到我的个人博客，我是R！" class="headerlink" title="欢迎来到我的个人博客，我R！"></a><p align="center">欢迎来到我的个人博客，我是R！</p></h3>
+                    <h3 id="关于我："><a href="index.html#关于我：" class="headerlink" title=" 关于我："></a><svg class="icon" aria-hidden="true"><use xlink:href="#icon-guanyu"></use></svg> 关于我：</h3>
+                    <p>我的名字和域名一样，但是请叫我R，现阶段是一名非计算机专业在读大学生，喜欢折腾各种新事物，一心只想好好学习。本人目前对于C、C++、Java、Python、PHP、node.js、JavaScript、HTML/CSS、MATLAB、Visual Basic、PL/SQL等编程语言全部精通<sup id="fnref:1"><a href="index.html#fn:1" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="&emsp;不好意思这里打错了，应该是“全不精通”">[1]</span></a></sup>,并且已经完全掌握各国语言Chinese、English、German、French、Russian、Japanese、Spanish、Italian、Greek、Latin、Polish、Dutch、Arabic、Hindi、Korean、Malay的单词拼写、中文释义及正确发音。</p>
+                    <h3 id="关于本站："><a href="index.html#关于本站：" class="headerlink" title=" 关于本站："></a><i class="fa fa-laptop"></i> 关于本站：</h3>
+                    <p>本站基于伪静态网页，虚拟机用的美国主机，所以响应较为缓慢！！</p>
+                    <h4 id="建站缘由"><a href="index.html#建站缘由" class="headerlink" title=" 建站缘由"></a><svg class="icon" aria-hidden="true"><use xlink:href="#icon-wajueji1"></use></svg> 建站缘由</h4>
+                    <blockquote>
+                        <p>最初是看到一些超酷网站，出于对美好事物的追求热爱与学习（哈哈😂），于是打算搭建一个属于我自己的世界。折腾了几个月（一个月折腾两次）</p>
+                    </blockquote>
+                    <ul>
+                        <li>
+                          <p id="hitokoto">:R 获取中...耐心等待</p>
+                          <script  src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
+
+                        </li>
+                        <li>
+                            <p>大脑容量有限，有输入应该有输出，用博客来存储无尽的知识。</p>
+                        </li>
+                        <li>
+                            <p>记录生活，记录一切，贯彻落实终身学习观念。</p>
+                        </li>
+                    </ul>
+                    <h3 id="联系方式："><a href="index.html#联系方式：" class="headerlink" title=" 联系方式："></a><svg class="icon" aria-hidden="true"><use xlink:href="#icon-lianxi"></use></svg> 联系方式：</h3>
+                    <div class="hide-toggle">
+                        <div class="hide-button toggle-title" style=""><i class="fas fa-caret-right fa-fw"></i><span>点击查看</span>
+                        </div>
+                        <div class="hide-content">
+                            <blockquote>
+                                <p>
+                                    <svg class="icon" aria-hidden="true">
+                                        <use xlink:href="#icon-QQ"></use>
+                                    </svg>QQ : <a href="http://wpa.qq.com/msgrd?v=3&uin=1577791638&site=qq&menu=yes" target="_blank" rel="noopener">1577791638 发起会话</a>
+                                </p>
+                            </blockquote>
+                            <blockquote>
+                                <p>
+                                    <svg class="icon" aria-hidden="true">
+                                        <use xlink:href="#icon-weixin"></use>
+                                    </svg>Wechat : <a target="_blank"href="https://wx2.sbimg.cn/2020/07/08/C9MpV.md.jpg">这是我的微信</a></p>
+                            </blockquote>
+                            <blockquote>
+                                <p>
+                                    <svg class="icon" aria-hidden="true">
+                                        <use xlink:href="#icon-mail-"></use>
+                                    </svg>Email : <a href="mailto:1577791638@qq.com">1577791638@qq.com</a>
+                                </p>
+                            </blockquote>
+
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div id="footnotes">
+                        <hr>
+                        <div id="footnotelist">
+                            <ol style="list-style: none; padding-left: 0; margin-left: 40px">
+                                <li id="fn:1"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;"> 不好意思这里打错了，应该是“全不精通”<a href="index.html#fnref:1" rev="footnote"> ↩</a></span>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div id="post-comment">
+                    <script src="https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js"></script>
+                    <script>
+                        var requestSetting = function (from, set) {
+                            var from = from
+                            var setting = set.split(',').filter(function (item) {
+                                return from.indexOf(item) > -1
+                            });
+                            setting = setting.length == 0 ? from : setting;
+                            return setting
+                        }
+
+                        var guestInfo = requestSetting(['nick', 'mail', 'link'], 'nick,mail,link')
+                        var requiredFields = requestSetting(['nick', 'mail'], 'nick,mail')
+                        let friends = '59b5937bf7bc1a8650b9e209815d4d3a,f836e33cb73b725cafe2756c75b9c844,f11891f63e9e00d708bb806e03499109,c6cfb32a2653854bc1539be94f927206,5ac64e0af5ff014b639852dd0c01c9b1,76388dc540cd1a49b12ea5684b41b40d,ac4376986fcb5a84e17f47b641c50a69,f2d55b29d47e34ef80291eb12a9da2da,627654b92032ee8ecbb3364433914144,73ae47162f3ce2d4dd8cd55b4a9f0554,1c14c74b1ceef57060397e56d3ce8b82,edfdba395b3555fc8087c5b2df3862bc,d221457efed79dd0207f2f055f5ae84e,898a1ce24f258d8b7863ec186021613a,ed3f6f2d0298171ebb836ce95b85c6ad,3e65f610f1de47f2f2eaa384b614daea,e011329178b200bcb5d94f0d0ff7544a,cedbf0f78a81203a2660a60b59356435'.split(',')
+                        let master = '14983359e7df56a2055c6b47753a66f8,12ec857c6a391eae0e5cdacf31bd8366'.split(',')
+
+                         window.valine = new Valine({
+                            el: '#vcomment',
+                            appId: 'ikEEo5XOYTytaqIUMsLaiisX-gzGzoHsz',
+                            appKey: 'CBx5lgfUldUe1i1qBC6m7k0K',
+                            placeholder: '人生在世，难免会写错别字，没事儿~',
+                            avatar: 'wavatar',
+                            meta: guestInfo,
+                            pageSize: '10',
+                            lang: 'zh-cn',
+                            recordIP: true,
+                            serverURLs: '',
+                            emojiCDN: 'https://github.com/blogimg/emotion',
+                            emojiMaps: {
+
+                            },
+                            enableQQ: true,
+                            requiredFields: requiredFields,
+                            master: master,
+                            friends: friends,
+                            metaPlaceholder: {
+                                "nick": "昵称/QQ号(必填)",
+                                "mail": "邮箱(必填)",
+                                "link": "网址(https://)"
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="aside_content" id="aside_content">
+                <div class="card-widget card-info">
+                    <div class="card-content">
+                        <div class="card-info-avatar is-center">
+                            <img class="avatar-img" src="https://q.qlogo.cn/g?b=qq&nk=1577791638&s=100" alt="avatar" />
+                            <div class="author-info__name">R</div>
+                            <div class="author-info__description"><i class="fas fa-map-marker-alt faa-bounce animated"></i> Tibet , China</div>
+                        </div>
+                        <div class="card-info-data">
+                            <div class="card-info-data-item is-center">
+                                <a href="../archives/index.html">
+                                    <div class="headline">文章</div>
+                                    <div class="length_num">99+</div>
+                                </a>
+                            </div>
+                            <div class="card-info-data-item is-center">
+                                <a href="../tags/index.html">
+                                    <div class="headline">类型</div>
+                                    <div class="length_num">9+</div>
+                                </a>
+                            </div>
+                            <div class="card-info-data-item is-center">
+                                <a href="../categories/index.html">
+                                    <div class="headline">关于</div>
+                                    <div class="length_num">9+</div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-info-bookmark is-center">
+                            <button class="button--animated" id="bookmark-it" type="button" title="加入书签"><i class="fas fa-bookmark"></i><span>加入书签</span>
+                            </button>
+                        </div>
+                        <div class="card-info-social-icons is-center"><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=1577791638&amp;site=qq&amp;menu=yes" target="_blank" title=""><i class="fab fa-qq"></i></a><a class="social-icon" href="https://github.com/" target="_blank" title=""><i class="fab fa-github"></i></a><a class="social-icon" href="" target="_blank" title="RSS"><i class="fa fa-rss"></i></a><a class="social-icon" href="mailto:1577791638@qq.com" target="_blank" title=""><i class="fa fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-widget card-announcement">
+                    <div class="card-content">
+                        <div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span>
+                        </div>
+                        <div class="announcement_content">我在页脚养了几条小鱼<i class='fas fa-fish'></i>，
+                            <img src="https://cdn.jsdelivr.net/gh/xiabor/img/i/QQ20200703100425.gif"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-widget card-recent-post">
+                    <div class="card-widget card-archives">
+                        <div class="card-content">
+                            <div class="item-headline"><i class="fas fa-archive"></i><span>归档</span>
+                            </div>
+                            <ul class="card-archive-list">
+                                <li class="card-archive-list-item"><a class="card-archive-list-link" href="http://rbaobei.top/game/development/"><span class="card-archive-list-date">2020年</span><span class="card-archive-list-count">2</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-widget card-badge">
+                        <div class="card-content">
+                            <div class="item-headline"> <i class="fas fa-laptop" aria-hidden="true"></i><span>关于本站</span>
+                            </div>
+                            <div class="badge_content">
+                                <div class="github-badge">
+                                  <a style="color: #fff" rel="license" href="#" target="_blank" title="PHP局中"><span class="badge-subject"><i class='fab fa-buffer'></i>PHP</span><span class="badge-value bg-blue">18.5%</span></a>
+                                  <a style="color: #fff" rel="license" href="#" target="_blank" title="JavaScript所占较多"><span class="badge-subject"><i class='fab fa-studiovinari'></i>JavaScript</span><span class="badge-value bg-blue">71.7%</span></a>
+                                  <a style="color: #fff" rel="license" href="#" target="_blank" title="静态网页托管于 GitHub Pages 和 Aliyun"><span class="badge-subject"><i class='fas fa-cloud-upload-alt'></i>Hosted</span><span class="badge-value bg-red">GitHub</span></a>
+                                  <a style="color: #fff" rel="license" href="#" target="_blank" title="html"><span class="badge-subject"><i class='fas fa-fighter-jet'></i>Html</span><span class="badge-value bg-brightgreen">7.9%</span></a>
+                                  <a style="color: #fff" rel="license" href="#" target="_blank" title="当前主题版本"><span class="badge-subject"><i class='fab fa-vimeo-v'></i>css</span><span class="badge-value bg-orange">1.9%</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-widget card-webinfo">
+                        <div class="card-content">
+                            <div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span>
+                            </div>
+                            <div class="webinfo">
+                                <div class="webinfo-item">
+                                    <div class="webinfo-article-name">文章数目 :</div>
+                                    <div class="webinfo-article-count">0</div>
+                                </div>
+                                <div class="webinfo-item">
+                                    <div class="webinfo-runtime-name">已运行时间 :</div>
+                                    <div class="webinfo-runtime-count" id="webinfo-runtime-count" publish_date="6/24/2019 00:00:00"></div>
+                                </div>
+                                <div class="webinfo-item">
+                                    <div class="webinfo-site-wordcount-name">本站总字数 :</div>
+                                    <div class="webinfo-site-wordcount">37.9k</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </main>
+        <footer id="footer" style="background-image: url(http://api.jybkw.cn/dmimg)" data-type="photo">
+            <div id="footer-wrap">
+                <div class="copyright">&copy;2020 <i style="color:#FF6A6A" class="fa fa-heartbeat"></i> R</div>
+                <div class="icp">
+                    <a href="" target="_blank" rel="noopener">
+                        <img class="icp-icon" src="../img/icp.png" /><span>京ICP备1111123号</span>
+                    </a>
+                </div>
+            </div>
+        </footer>
+        </div>
+        <section class="rightside" id="rightside">
+            <div id="rightside-config-hide">
+                
+                <button id="darkmode" title="浅色和深色模式转换"><i class="fas fa-adjust"></i>
+                </button>
+            </div>
+            <div id="rightside-config-show">
+                <button id="rightside_config" title="设置"><i class="fas fa-cog"></i>
+                </button>
+                <button id="go-up" title="回到顶部"><i class="fas fa-arrow-up"></i>
+                </button>
+            </div>
+        </section>
+
+        <div class="search-mask"></div>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+        <script src="../js/utils.js"></script>
+        <script src="../js/main.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script>
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                pangu.autoSpacingPage()
+            })
+        </script>
+        <script src="../js/search/local-search.js"></script>
+        <script>
+            if (document.getElementsByClassName('mermaid').length) {
+                loadScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js', function () {
+                    mermaid.initialize({
+                        theme: 'dark',
+                    })
+                })
+            }
+        </script>
+        <script src="../js/fishes.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/js/hideMobileSidebar.js"></script>
+        <script src="../js/activate-power-mode.js"></script>
+</body>
+
+</html>
